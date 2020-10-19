@@ -32,6 +32,8 @@ public:
 // ------------------------
 GameUnit *pUnitArray[N_UNIT];
 
+//--------------1차 코드 분석
+
 void InitUnitArray()
 {
 	for (int i = 0; i < N_UNIT; i++)
@@ -67,6 +69,8 @@ void DestroyUnit(GameUnit* pUnit)
 	}
 }
 
+//--------------2차 코드 분석
+
 void main()
 {
 	InitUnitArray();
@@ -83,5 +87,6 @@ void main()
 	DestroyUnit(pUnit2);
 }
 
+//--------------3차 코드 분석 및 총 
 
 // 출처: https://github.com/CppKorea/DesignPattern/blob/2020/master/Singleton/Singleton/Singleton2.cpp
