@@ -1,1 +1,154 @@
+--------------------박세진-----------------------
 
+#include <iostream>
+using namespace std;
+
+//유닛의 최대개수 변수선언
+#define N_UNIT    100
+
+//유닛의 타입 변수선언
+#define ATTACK_UNIT   1
+#define PROTECT_UNIT  2
+
+
+//게임유닛 클래스정의
+class GameUnit
+{
+public:
+	//위치좌표
+	virtual void Display(int x, int y) = 0;
+	//행동
+	virtual void DoAction() = 0;
+};
+
+//게임유닛을 상속받는 공격유닛 클래스정의
+class AttackUnit : public GameUnit
+{
+public:
+	void Display(int x, int y) {}
+	void DoAction() {}
+};
+
+//게임유닛을 상속받는 방어유닛 클래스정의
+class ProtectUnit : public GameUnit
+{
+public:
+	void Display(int x, int y) {}
+	void DoAction() {}
+};
+
+// Global Variable 
+//부모클래스의 포인터배열변수 pUnitArray 생성
+GameUnit* pUnitArray[N_UNIT];
+
+--------------------이제무-----------------------
+
+#include <iostream>
+using namespace std;
+#define N_UNIT    100 //게임유닛 100으로 지정
+#define ATTACK_UNIT   1 //공격유닛 1로 지정 
+#define PROTECT_UNIT  2 //방어 유닛 2으로 지정
+class GameUnit //GameUnit 클래스 지정, 가상함수 Display, DoAciton 순수 가상함수
+{
+public:
+	virtual void Display(int x, int y) = 0;
+	virtual void DoAction() = 0;
+};
+class AttackUnit : public GameUnit //AttackUnit 클래스, GameUnit에 상속, Display, DoAction
+{
+public:
+	void Display(int x, int y) {} //어택 유닛 진열
+	void DoAction() {} //어택 유닛 행동
+};
+class ProtectUnit : public GameUnit  //ProtectUnit 클래스, GameUnit에 상속, Display, DoAction 오버라이딩
+{
+{
+public:
+	void Display(int x, int y) {} //프로텍트유닛 진열
+	void DoAction() {} // 프로텍트 유닛 행동
+};
+// ------------------------
+// Global Variable //전역지역
+// ------------------------
+GameUnit *pUnitArray[N_UNIT]; 게임유닛 객체 배열 N_UNIT 즉 100으로 지정
+
+--------------------신혁준-----------------------
+
+#include <iostream>
+using namespace std;
+
+#define N_UNIT    100									// 생성할 수 있는 유닛의 갯수를 100개로 제한
+
+#define ATTACK_UNIT   1									// 생성할 수 있는 공격유닛의 갯수를 1개로 제한
+#define PROTECT_UNIT  2									// 생성할 수 있는 방어유닛의 갯수를 2개로 제한
+
+class GameUnit											// GameUnit 클래스 생성
+{
+public:
+	virtual void Display(int x, int y) = 0;				// Display 함수 정의
+	virtual void DoAction() = 0;						// DoAction 함수 정의
+};
+
+class AttackUnit : public GameUnit						// AttackUnit 클래스를 생성한 뒤 GameUnit 으로 부터 상속받음
+{
+public:
+	void Display(int x, int y) {}
+	void DoAction() {}
+};
+
+class ProtectUnit : public GameUnit						// ProtectUnit 클래스를 생성한 뒤 GameUnit 으로 부터 상속받음
+{
+public:
+	void Display(int x, int y) {}
+	void DoAction() {}
+};
+
+// ------------------------
+// Global Variable 
+// ------------------------
+GameUnit* pUnitArray[N_UNIT];							// 전역 변수인 pUnitArray 배열 변수 선언
+
+-------------------박부경-----------------------
+
+#include <iostream>
+using namespace std;
+
+#define N_UNIT    100
+
+#define ATTACK_UNIT   1
+#define PROTECT_UNIT  2
+
+// N_UNIT을 100, ATTACK_UNIT을 1, PROTECT_UNIT을 2로 정의
+
+class GameUnit // 추상클래스
+{
+public:
+virtual void Display(int x, int y) = 0; 
+// 순수가상함수 (pure virtual)
+// 좌표
+virtual void DoAction() = 0; 
+// 순수가상함수 (pure virtual)
+// 행동
+};
+
+class AttackUnit : public GameUnit
+{
+public:
+void Display(int x, int y) {}
+void DoAction() {}
+};
+
+class ProtectUnit : public GameUnit
+{
+public:
+void Display(int x, int y) {}
+void DoAction() {}
+};
+
+// 순수 가상 함수 오버라이딩
+// 자식클래스를 재정의
+
+// ------------------------
+// Global Variable 
+// ------------------------
+GameUnit* pUnitArray[N_UNIT]; // 부모클래스 GameUnit의 포인터변수 pUnitArray 생성
