@@ -1,3 +1,4 @@
+-------------------------신혁준--------------------------------------
 #include <iostream>
 
 using namespace std;
@@ -169,4 +170,393 @@ int main()
 	GameUnit::DestroyUnit(pUnit2);
 }
 
-----------------------------------------------------------------------------------
+-------------------------박부경--------------------------------------
+#include <iostream>
+using namespace std;
+
+#define N_UNIT 100 // 생성 유닛 100개
+#define S_UNiT 1 // 특별한 유닛 1개
+
+class GameUnit // 싱글톤 클래스 (추상 클래스)
+{
+protected:
+	GameUnit() {} // 생성자
+	GameUnit(const GameUnit& rhs) {} // 복사 생성자
+
+	static GameUnit* pUnitArray_[N_UNIT];
+
+public:
+	static void InitUnitArray() // 전역 함수 InitUnitArray() : 객체 공간을 0으로 초기화
+	{
+		for (int i = 0; i < N_UNIT; i++)
+			pUnitArray_[i] = 0;
+	}
+
+	static GameUnit* CreateInstance() { return 0; }
+
+	static void DestroyUnit(GameUnit* pUnit)
+	{
+		for (int i = 0; i < N_UNIT; i++)
+		{
+			if (pUnitArray_[i] == pUnit)
+			{
+				delete pUnitArray_[i];
+				pUnitArray_[i] = 0;
+				return;
+			}
+		}
+	}
+
+	virtual void Display(int x, int y) = 0;
+	virtual void DoAction() = 0;
+};
+
+GameUnit* GameUnit::pUnitArray_[N_UNIT];
+
+class AttackUnit : public GameUnit
+{
+private:
+	int x;
+	int y;
+	int hp;
+	int mp;
+	int damage;
+
+protected:
+	AttackUnit() {}
+	AttackUnit(const AttackUnit& rhs) {}
+
+public:
+	static GameUnit* CreateInstance()
+	{
+		for (int i = 0; i < N_UNIT; i++)
+		{
+			if (pUnitArray_[i] == 0)
+			{
+				pUnitArray_[i] = new AttackUnit;
+				return pUnitArray_[i];
+			}
+		}
+
+		return 0;
+	}
+
+	void Display(int x, int y) 
+	{
+		cout << x << "," << y << endl;
+		//this->x = x;
+		//this->y = y;
+	}
+	void DoAction() 
+	{
+		cout << "AttackUnit!" << endl;
+	}
+};
+
+class ProtectUnit : public GameUnit
+{
+private:
+	int x;
+	int y;
+	int hp;
+	int mp;
+	int damage;
+
+protected:
+	ProtectUnit() {}
+	ProtectUnit(const ProtectUnit& rhs) {}
+
+public:
+	static GameUnit* CreateInstance()
+	{
+		for (int i = 0; i < N_UNIT; i++)
+		{
+			if (pUnitArray_[i] == 0)
+			{
+				pUnitArray_[i] = new ProtectUnit;
+				return pUnitArray_[i];
+			}
+		}
+
+		return 0;
+	}
+
+	void Display(int x, int y)
+	{
+		cout << x << "," << y << endl;
+		//this->x = x;
+		//this->y = y;
+	}
+	void DoAction() 
+	{
+		cout << "ProtectUnit!" << endl;
+	}
+};
+
+class Boss : public GameUnit
+{
+private:
+	int x;
+	int y;
+	int hp;
+	int mp;
+	int damage;
+
+public:
+	static GameUnit* CreateInstance()
+	{
+		for (int i = 0; i < S_UNiT; i++)
+		{
+			if (pUnitArray_[i] == 0)
+			{
+				pUnitArray_[i] = new Boss;
+				return pUnitArray_[i];
+			}
+		}
+
+		return 0;
+	}
+
+	void Display(int x, int y)
+	{
+		cout << x << "," << y << endl;
+		//this->x = x;
+		//this->y = y;
+	}
+	void DoAction()
+	{
+		cout << "BOSS!" << endl;
+	}
+};
+
+class HQ : public GameUnit
+{
+private:
+	int x;
+	int y;
+	int hp;
+
+public:
+	static GameUnit* CreateInstance()
+	{
+		for (int i = 0; i < S_UNiT; i++)
+		{
+			if (pUnitArray_[i] == 0)
+			{
+				pUnitArray_[i] = new HQ;
+				return pUnitArray_[i];
+			}
+		}
+
+		return 0;
+	}
+
+	void Display(int x, int y)
+	{
+		cout << x << "," << y << endl;
+		//this->x = x;
+		//this->y = y;
+	}
+	void DoAction()
+	{
+		cout << "HQ!" << endl;
+	}
+};
+
+
+int main()
+{
+	GameUnit::InitUnitArray(); // pUnitArray_[i]을 0으로 초기화
+
+	GameUnit* pUnit1 = AttackUnit::CreateInstance(); // 공격 유닛 객체 100개 생성
+	if (pUnit1 == 0)
+		cout << "No More Create Unit" << endl;
+
+	GameUnit* pUnit2 = ProtectUnit::CreateInstance(); // 방여 유닛 객체 100개 생성
+	if (pUnit2 == 0)
+		cout << "No More Create Unit" << endl;
+
+	pUnit1[1].DoAction();
+	pUnit1[1].Display(1, 2);
+
+	pUnit1[2].DoAction();
+	pUnit1[2].Display(1, 3);
+
+	pUnit1[3].DoAction();
+	pUnit1[3].Display(1, 4);
+
+	pUnit2[0].DoAction();
+	pUnit2[0].Display(2, 3);
+
+	GameUnit::DestroyUnit(pUnit1);
+	GameUnit::DestroyUnit(pUnit2);
+
+
+	return 0;
+}
+
+-------------------------이제무--------------------------------------
+#include <iostream>
+using namespace std;
+ 
+#define N_UNIT    100   //유닛의 갯수를 100개로 제한.
+ 
+class GameUnit          //싱글톤 클래스이다.
+{
+    int hp=1;
+    int attack;
+    int s_x, s_y;
+    bool dead = false;
+protected:
+    GameUnit() { attack = 5; }                          //생성자 안씀.
+    GameUnit(const GameUnit& rhs) {}       //복사생성자 안씀.
+ 
+    static GameUnit* pUnitArray_[N_UNIT];
+ 
+public:
+    int attack_player(int damage)
+    {
+        return damage;
+    }
+
+    void damaged(int att) {
+    }
+
+    static void InitUnitArray()
+    {
+        for (int i = 0; i < N_UNIT; i++)
+            pUnitArray_[i] = nullptr;
+    }
+ 
+    static GameUnit* CreateInstance() { return 0; }
+ 
+    static void DestroyUnit(GameUnit* pUnit)
+    {
+        for (int i = 0; i < N_UNIT; i++)
+        {
+            if (pUnitArray_[i] == pUnit)
+            {
+                delete pUnitArray_[i];
+                pUnitArray_[i] = nullptr;
+                return;
+            }
+        }
+    }
+};
+
+// -- 클래스 변수 정의
+GameUnit* GameUnit::pUnitArray_[N_UNIT];
+ 
+class AttackUnit : public GameUnit
+{
+
+protected:
+    AttackUnit() {}
+    AttackUnit(const AttackUnit& rhs) {}
+public:
+
+
+    static GameUnit* CreateInstance()
+    {
+        for (int i = 0; i < N_UNIT; i++)
+        {
+            if (pUnitArray_[i] == nullptr)
+            {
+                pUnitArray_[i] = new AttackUnit;
+                return pUnitArray_[i];
+            }
+        }
+ 
+        return 0;
+    }
+};
+ 
+class ProtectUnit : public GameUnit
+{
+protected:
+    ProtectUnit() {}
+    ProtectUnit(const ProtectUnit& rhs) {}
+ 
+public:
+    static GameUnit* CreateInstance()
+    {
+        for (int i = 0; i < N_UNIT; i++)
+        {
+            if (pUnitArray_[i] == nullptr)
+            {
+                pUnitArray_[i] = new ProtectUnit;
+                return pUnitArray_[i];
+            }
+        }
+ 
+        return 0;
+    }
+};
+ 
+int main()
+{
+    GameUnit::InitUnitArray();
+
+    GameUnit *pUnit1 = AttackUnit::CreateInstance();
+    if (pUnit1 == 0)
+        cout << "No More Create Unit" << endl;
+
+
+    GameUnit *pUnit2 = ProtectUnit::CreateInstance();
+    if (pUnit2 == 0)
+        cout << "No More Create Unit" << endl;
+
+    pUnit1->CreateInstance();
+
+    int playerhp = 50;
+
+    cout << "적 생성" << endl;
+    int enemycount = sizeof(pUnit1);
+    cout << sizeof(pUnit1) << endl;
+    int damage = pUnit1->attack_player(5);
+    cout << " 공격 : a -------- " << "방어 : d" << endl;
+    char act;
+    while (1) {
+        cin >> act;
+        cout << endl;
+        if (act == 'a' || act == 'A')
+        {
+            playerhp -= 5;
+            cout << "체력 : " << playerhp << endl;
+            cout << "[적을 공격]" << endl;
+            pUnit1->damaged(damage);
+            enemycount -= 1;
+            cout <<"[남은 적의 수] [" << enemycount <<"]"<< endl;
+            
+            if (enemycount <= 0) {
+                cout << "다 쓰러졌다." << endl;
+                break;
+            }
+
+            if (playerhp <= 0) {
+                cout << "사망하였습니다." << endl;
+            }
+        }
+        else if (act == 'd' || act == 'D')
+        {
+            playerhp -= 1;
+            cout << "방어" << endl;
+            cout << "체력 : " << playerhp << endl;
+            cout << "[남은 적의 수] [" << enemycount << "]" << endl;
+
+        }
+        else
+        {
+            cout << "다시 입력해주시오" << endl;
+        }
+        cout << endl;
+    }
+
+    GameUnit::DestroyUnit(pUnit1);
+    GameUnit::DestroyUnit(pUnit2);
+ 
+
+    return 0;
+}
+
+-------------------------박세진--------------------------------------
