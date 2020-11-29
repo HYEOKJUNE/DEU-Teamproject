@@ -560,3 +560,272 @@ int main()
 }
 
 -------------------------박세진--------------------------------------
+
+#include <iostream>
+
+using namespace std;
+
+#define N_UNIT 100
+
+class GameUnit
+{
+public:
+	static void InitUnitArray()
+	{
+		for (int i = 0; i < N_UNIT; i++)
+			pUnitArray_[i] = 0;
+	}
+
+	static GameUnit* CreateInstance() { return 0; }
+
+	static void DestroyUnit(GameUnit* pUnit)
+	{
+		for (int i = 0; i < N_UNIT; i++)
+		{
+			if (pUnitArray_[i] == pUnit)
+			{
+				delete pUnitArray_[i];
+				pUnitArray_[i] = 0;
+				return;
+			}
+		}
+	}
+
+
+
+	virtual void Display(int x, int y) = 0;
+	virtual void DoAction(int hp, int stat1,double stat2) = 0;
+	virtual void Unitnum() = 0;
+	virtual void Status() = 0;
+protected:
+	GameUnit() {}
+	GameUnit(const GameUnit& rhs) {}
+	static GameUnit* pUnitArray_[N_UNIT];
+};
+
+// 클래스 변수 정의
+
+GameUnit* GameUnit::pUnitArray_[N_UNIT];
+
+class AttackUnit : public GameUnit
+{
+public:
+	static GameUnit* CreateInstance()
+	{
+		for (int i = 0; i < N_UNIT; i++)
+		{
+			if (pUnitArray_[i] == 0)
+			{
+				pUnitArray_[i] = new AttackUnit;
+				return pUnitArray_[i];
+			}
+
+		}
+		return 0;
+	}
+
+
+	void Display(int x, int y)
+	{
+		cout << "Attack유닛의 위치 : ( " << x << "," << y << " )" << endl;
+	}
+	void DoAction(int hp, int stat, double stat2)
+	{
+		cout << "Attack유닛의 능력치 : " << "HP = " << hp << "," << "공격력 = " << stat << "공격속도 = " << stat2 << endl;
+	}
+	void Unitnum()
+	{
+		cout << "생성 할 수 있는 공격 유닛 수 :" << sizeof(pUnitArray_) / 4 << endl;
+		pUnitArray_[0] = new AttackUnit;
+		pUnitArray_[1] = new AttackUnit;
+		pUnitArray_[2] = new AttackUnit;
+		cout << endl;
+	}
+	void Status()
+	{
+		pUnitArray_[0]->Display(1, 5);
+		pUnitArray_[1]->Display(1, 6);
+		pUnitArray_[2]->Display(1, 7);
+		cout << endl;
+		pUnitArray_[0]->DoAction(50, 100,1);
+		pUnitArray_[1]->DoAction(100, 80,2);
+		pUnitArray_[2]->DoAction(200, 150,2);
+	}
+	void Passive(int PS)
+	{
+		if (PS == 1)
+		{
+			cout << "공격속도 증가" << endl;
+		}
+		else if (PS == 2) 
+		{
+			cout << "다수 공격 가능" << endl;
+		}
+	}
+		
+
+protected:
+	AttackUnit() {}
+	AttackUnit(const AttackUnit& rhs) {}
+};
+
+class ProtectUnit : public GameUnit
+{
+public:
+	static GameUnit* CreateInstance()
+	{
+		for (int i = 0; i < N_UNIT; i++)
+		{
+			if (pUnitArray_[i] == 0)
+			{
+				pUnitArray_[i] = new ProtectUnit;
+				return pUnitArray_[i];
+			}
+		}
+		return 0;
+	}
+
+	void Display(int x, int y)
+	{
+		cout << "Protect유닛의 위치 : ( " << x << "," << y << " )" << endl;
+	}
+	void DoAction(int hp, int stat, double stat2)
+	{
+		cout << "Protect유닛의 능력치 : " << "HP = " << hp << "," << "방어력 = " << stat << "공격속도 = " << stat2 << endl;
+	}
+	void Unitnum()
+	{
+		cout << "생성 할 수 있는 방어 유닛 수 :" << sizeof(pUnitArray_) / 4 << endl;
+		pUnitArray_[0] = new ProtectUnit;
+		pUnitArray_[1] = new ProtectUnit;
+		pUnitArray_[2] = new ProtectUnit;
+		cout << endl;
+	}
+	void Status()
+	{
+		pUnitArray_[0]->Display(2, 5);
+		pUnitArray_[1]->Display(2, 6);
+		pUnitArray_[2]->Display(2, 7);
+		cout << endl;
+		pUnitArray_[0]->DoAction(500, 100, 0.5);
+		pUnitArray_[1]->DoAction(1000, 80, 0.5);
+		pUnitArray_[2]->DoAction(2000, 150, 1);
+	}
+	void Passive(int PS)
+	{
+		if (PS == 3)
+		{
+			cout << "방어력 일시 증가" << endl;
+		}
+		else if (PS == 4)
+		{
+			cout << "반격 데미지 추가" << endl;
+		}
+	}
+protected:
+
+	ProtectUnit() {}
+	ProtectUnit(const ProtectUnit& rhs) {}
+};
+
+class BuffUnit : public GameUnit
+{
+public:
+	static GameUnit* CreateInstance()
+	{
+		for (int i = 0; i < N_UNIT; i++)
+		{
+			if (pUnitArray_[i] == 0)
+			{
+				pUnitArray_[i] = new BuffUnit;
+				return pUnitArray_[i];
+			}
+		}
+		return 0;
+	}
+
+	void Display(int x, int y)
+	{
+		cout << "Buff유닛의 위치 : ( " << x << "," << y << " )" << endl;
+	}
+	void DoAction(int hp, int stat, double stat2)
+	{
+		cout << "Buff유닛의 능력치 : " << "HP = " << hp << "," << "방어력 = " << stat << "공격속도 = " << stat2 << endl;
+	}
+	void Unitnum()
+	{
+		cout << "생성 할 수 있는  유닛 수 :" << sizeof(pUnitArray_) / 4 << endl;
+		pUnitArray_[0] = new BuffUnit;
+		pUnitArray_[1] = new BuffUnit;
+		pUnitArray_[2] = new BuffUnit;
+		cout << endl;
+	}
+	void Status()
+	{
+		pUnitArray_[0]->Display(2, 5);
+		pUnitArray_[1]->Display(2, 6);
+		pUnitArray_[2]->Display(2, 7);
+		cout << endl;
+		pUnitArray_[0]->DoAction(300, 70, 1);
+		pUnitArray_[1]->DoAction(600, 100, 1);
+		pUnitArray_[2]->DoAction(900, 120,1.5);
+	}
+	void Passive(int PS)
+	{
+		if (PS == 5)
+		{
+			cout << "주변 아군 공격력 증가" << endl;
+		}
+		else if (PS == 6)
+		{
+			cout << "주변 적군 이동속도 감소" << endl;
+		}
+		else if (PS == 7)
+		{
+			cout << "주변 아군 체력 회복" << endl;
+		}
+	}
+protected:
+
+	BuffUnit() {}
+	BuffUnit(const BuffUnit& rhs) {}
+};
+
+
+int main()
+{
+	GameUnit::InitUnitArray();
+	GameUnit* pUnit1 = AttackUnit::CreateInstance();
+
+	if (pUnit1 == 0)
+		cout << "No More Create Unit" << endl;
+
+	GameUnit* pUnit2 = ProtectUnit::CreateInstance();
+
+	if (pUnit2 == 0)
+		cout << "Nor M0re Create Unit" << endl;
+
+	GameUnit* pUnit3 = BuffUnit::CreateInstance();
+
+	if (pUnit3 == 0)
+		cout << "Nor M0re Create Unit" << endl;
+
+
+
+	pUnit1->Unitnum();
+	pUnit1->Status();
+
+	cout << endl;
+
+	pUnit2->Unitnum();
+	pUnit2->Status();
+
+	cout << endl;
+
+	pUnit3->Unitnum();
+	pUnit3->Status();
+
+	GameUnit::DestroyUnit(pUnit1);
+	GameUnit::DestroyUnit(pUnit2);
+	GameUnit::DestroyUnit(pUnit3);
+}
